@@ -1,7 +1,6 @@
 package corp.finance.FinancialServices.users.service;
 
-import corp.finance.FinancialServices.common.ServicePropertiesConfiguration;
-import corp.finance.FinancialServices.users.model.UserList;
+import corp.finance.FinancialServices.common.ServiceUrlHandler;
 import corp.finance.FinancialServices.users.model.User;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,37 +19,35 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final RestTemplate restTemplate = new RestTemplate();
-    private final ServicePropertiesConfiguration servicePropertiesConfiguration;
+    private final ServiceUrlHandler serviceUrlHandler;
 
-    private static final String ALL_END_POINT = "/all";
-    private static final String IDS_END_POINT = "/ids";
+    private static final String ALL_END_POINT = "/users/all";
+    private static final String IDS_END_POINT = "/users/ids";
 
     @Override
     public List<User> getAllUsers() {
-        URI userServiceUrl = servicePropertiesConfiguration.getUserServiceUrl(ALL_END_POINT);
-        UserList userList = restTemplate.getForObject(userServiceUrl, UserList.class);
-        List<User> users = userList.get();
-        if (null != users && !users.isEmpty()) {
-            return users;
+        URI userServiceUrl = serviceUrlHandler.getUserServiceUrl(ALL_END_POINT);
+        User[] users = restTemplate.getForObject(userServiceUrl, User[].class);
+        if (null != users && users.length > 0) {
+            return List.of(users);
         }
         return Collections.emptyList();
     }
 
     @Override
     public List<User> getUsers(List<String> userIds) {
-        URI userServiceUrl = servicePropertiesConfiguration.getUserServiceUrl(IDS_END_POINT);
+        URI userServiceUrl = serviceUrlHandler.getUserServiceUrl(IDS_END_POINT);
         List<String> requestBody = new ArrayList<>(userIds);
-        UserList userList = restTemplate.postForObject(userServiceUrl, requestBody, UserList.class);
-        List<User> users = userList.get();
-        if (null != users && !users.isEmpty()) {
-            return users;
+        User[] users = restTemplate.postForObject(userServiceUrl, requestBody, User[].class);
+        if (null != users && users.length > 0) {
+            return List.of(users);
         }
         return Collections.emptyList();
     }
 
     @Override
     public User getUser(String userId) {
-        URI userServiceUrl = servicePropertiesConfiguration.getUserServiceUrl("/" + userId);
+        URI userServiceUrl = serviceUrlHandler.getUserServiceUrl("/users/" + userId);
         return restTemplate.getForObject(userServiceUrl, User.class);
     }
 }

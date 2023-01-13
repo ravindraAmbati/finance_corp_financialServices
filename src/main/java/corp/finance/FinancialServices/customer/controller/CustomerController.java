@@ -21,7 +21,7 @@ public class CustomerController {
     }
 
     @PostMapping("/ids")
-    public @ResponseBody List<Customer> getCustomers(List<String> userIds) {
+    public @ResponseBody List<Customer> getCustomers(@RequestBody List<String> userIds) {
         return customerService.getCustomers(userIds);
     }
 
