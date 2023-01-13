@@ -1,8 +1,8 @@
 package corp.finance.FinancialServices.collateral.service;
 
 import corp.finance.FinancialServices.collateral.model.Collateral;
-import corp.finance.FinancialServices.common.CollateralList;
-import corp.finance.FinancialServices.common.ServiceProperties;
+import corp.finance.FinancialServices.collateral.model.CollateralList;
+import corp.finance.FinancialServices.common.ServicePropertiesConfiguration;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,14 +19,14 @@ import java.util.List;
 public class CollateralServiceImpl implements CollateralService {
 
     private final RestTemplate restTemplate = new RestTemplate();
-    private final ServiceProperties serviceProperties;
+    private final ServicePropertiesConfiguration servicePropertiesConfiguration;
 
     private static final String ALL_END_POINT = "/all";
     private static final String IDS_END_POINT = "/ids";
 
     @Override
     public List<Collateral> getAllCollateral() {
-        URI collateralServiceUrl = serviceProperties.getCollateralServiceUrl(ALL_END_POINT);
+        URI collateralServiceUrl = servicePropertiesConfiguration.getCollateralServiceUrl(ALL_END_POINT);
         CollateralList collateralList = restTemplate.getForObject(collateralServiceUrl, CollateralList.class);
         List<Collateral> collaterals = collateralList.get();
         if (null != collaterals && !collaterals.isEmpty()) {
@@ -36,8 +36,8 @@ public class CollateralServiceImpl implements CollateralService {
     }
 
     @Override
-    public List<Collateral> getCollateral(List<String> collateralIds) {
-        URI collateralServiceUrl = serviceProperties.getCollateralServiceUrl(IDS_END_POINT);
+    public List<Collateral> getCollaterals(List<String> collateralIds) {
+        URI collateralServiceUrl = servicePropertiesConfiguration.getCollateralServiceUrl(IDS_END_POINT);
         List<String> requestBody = new ArrayList<>(collateralIds);
         CollateralList collateralList = restTemplate.postForObject(collateralServiceUrl, requestBody, CollateralList.class);
         List<Collateral> collaterals = collateralList.get();
@@ -49,7 +49,7 @@ public class CollateralServiceImpl implements CollateralService {
 
     @Override
     public Collateral getCollateral(String collateralId) {
-        URI collateralServiceUrl = serviceProperties.getCollateralServiceUrl("/" + collateralId);
+        URI collateralServiceUrl = servicePropertiesConfiguration.getCollateralServiceUrl("/" + collateralId);
         return restTemplate.getForObject(collateralServiceUrl, Collateral.class);
     }
 }

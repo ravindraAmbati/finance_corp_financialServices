@@ -5,6 +5,8 @@ import corp.finance.FinancialServices.common.Audit;
 import lombok.*;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Builder
 @Data
 @AllArgsConstructor
@@ -17,6 +19,8 @@ public class User {
     private String userId;
     private String userName;
     private String userType;
+    private List<String> productIds;
+    private List<String> collateralIds;
     private Contact contact;
     private Audit audit;
 }

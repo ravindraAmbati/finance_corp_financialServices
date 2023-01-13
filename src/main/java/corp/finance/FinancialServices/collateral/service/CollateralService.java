@@ -9,7 +9,7 @@ public interface CollateralService {
 
     List<Collateral> getAllCollateral();
 
-    List<Collateral> getCollateral(List<String> collateralIds);
+    List<Collateral> getCollaterals(List<String> collateralIds);
 
     Collateral getCollateral(String collateralId);
 }

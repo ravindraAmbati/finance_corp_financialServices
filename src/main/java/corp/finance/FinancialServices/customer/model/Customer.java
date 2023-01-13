@@ -1,10 +1,13 @@
-package corp.finance.FinancialServices.common;
+package corp.finance.FinancialServices.customer.model;
 
 import corp.finance.FinancialServices.collateral.model.Collateral;
+import corp.finance.FinancialServices.common.Audit;
 import corp.finance.FinancialServices.products.model.Product;
 import corp.finance.FinancialServices.users.model.User;
 import lombok.*;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Builder
 @Data
@@ -16,7 +19,7 @@ import org.springframework.stereotype.Component;
 public class Customer {
 
     private User user;
-    private Product product;
-    private Collateral collateral;
+    private List<Product> products;
+    private List<Collateral> collaterals;
     private Audit audit;
 }

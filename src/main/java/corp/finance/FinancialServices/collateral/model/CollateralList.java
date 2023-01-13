@@ -1,6 +1,4 @@
-package corp.finance.FinancialServices.common;
-
-import corp.finance.FinancialServices.collateral.model.Collateral;
+package corp.finance.FinancialServices.collateral.model;
 
 import java.util.ArrayList;
 import java.util.Collections;

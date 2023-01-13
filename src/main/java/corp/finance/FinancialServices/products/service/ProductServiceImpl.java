@@ -1,7 +1,7 @@
 package corp.finance.FinancialServices.products.service;
 
-import corp.finance.FinancialServices.common.ProductList;
-import corp.finance.FinancialServices.common.ServiceProperties;
+import corp.finance.FinancialServices.products.model.ProductList;
+import corp.finance.FinancialServices.common.ServicePropertiesConfiguration;
 import corp.finance.FinancialServices.products.model.Product;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,14 +20,14 @@ import java.util.List;
 public class ProductServiceImpl implements ProductService {
 
     private final RestTemplate restTemplate = new RestTemplate();
-    private final ServiceProperties serviceProperties;
+    private final ServicePropertiesConfiguration servicePropertiesConfiguration;
 
     private static final String ALL_END_POINT = "/all";
     private static final String IDS_END_POINT = "/ids";
 
     @Override
     public List<Product> getAllProducts() {
-        URI productServiceUrl = serviceProperties.getProductServiceUrl(ALL_END_POINT);
+        URI productServiceUrl = servicePropertiesConfiguration.getProductServiceUrl(ALL_END_POINT);
         ProductList productList = restTemplate.getForObject(productServiceUrl, ProductList.class);
         List<Product> products = productList.get();
         if (null != products && !products.isEmpty()) {
@@ -38,7 +38,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getProducts(List<String> productIds) {
-        URI productServiceUrl = serviceProperties.getProductServiceUrl(IDS_END_POINT);
+        URI productServiceUrl = servicePropertiesConfiguration.getProductServiceUrl(IDS_END_POINT);
         List<String> requestBody = new ArrayList<>(productIds);
         ProductList productList = restTemplate.postForObject(productServiceUrl, requestBody, ProductList.class);
         List<Product> collaterals = productList.get();
@@ -50,7 +50,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product getProduct(String productId) {
-        URI productServiceUrl = serviceProperties.getProductServiceUrl("/" + productId);
+        URI productServiceUrl = servicePropertiesConfiguration.getProductServiceUrl("/" + productId);
         return restTemplate.getForObject(productServiceUrl, Product.class);
     }
 }
