@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: FinancialServices
+server:
+  port: 9060
+service:
+  collateral:
+    host: localhost
+    port: 9070
+  product:
+    host: localhost
+    port: 9080
+  user:
+    host: localhost
+    port: 9090
