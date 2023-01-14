@@ -34,7 +34,7 @@ public class ServiceUrlHandler {
     public URI getUserServiceUrl(String endPoint) {
         log.info("getUserServiceUrl() endPoint: {}", endPoint);
         try {
-            URI uri = new URI(HTTP, "System", userServiceHost, userServicePort, endPoint, null, null);
+            URI uri = new URI(HTTP, null, userServiceHost, userServicePort, endPoint, null, null);
             log.info("getUserServiceUrl() uri: {}", uri);
             return uri;
         } catch (URISyntaxException e) {
@@ -46,7 +46,7 @@ public class ServiceUrlHandler {
     public URI getProductServiceUrl(String endPoint) {
         log.info("getUserServiceUrl() endPoint: {}", endPoint);
         try {
-            URI uri = new URI(HTTP, "System", productServiceHost, productServicePort, endPoint, null, null);
+            URI uri = new URI(HTTP, null, productServiceHost, productServicePort, endPoint, null, null);
             log.info("getProductServiceUrl() uri: {}", uri);
             return uri;
         } catch (URISyntaxException e) {
@@ -58,7 +58,7 @@ public class ServiceUrlHandler {
     public URI getCollateralServiceUrl(String endPoint) {
         log.info("getCollateralServiceUrl() endPoint: {}", endPoint);
         try {
-            URI uri = new URI(HTTP, "System", collateralHost, collateralPort, endPoint, null, null);
+            URI uri = new URI(HTTP, null, collateralHost, collateralPort, endPoint, null, null);
             log.info("getCollateralServiceUrl() uri: {}", uri);
             return uri;
         } catch (URISyntaxException e) {
