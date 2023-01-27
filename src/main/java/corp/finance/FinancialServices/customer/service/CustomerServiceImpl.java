@@ -1,11 +1,14 @@
 package corp.finance.FinancialServices.customer.service;
 
 import corp.finance.FinancialServices.collateral.model.Collateral;
+import corp.finance.FinancialServices.collateral.service.CollateralFeignClient;
 import corp.finance.FinancialServices.collateral.service.CollateralService;
 import corp.finance.FinancialServices.customer.model.Customer;
 import corp.finance.FinancialServices.products.model.Product;
+import corp.finance.FinancialServices.products.service.ProductFeignClient;
 import corp.finance.FinancialServices.products.service.ProductService;
 import corp.finance.FinancialServices.users.model.User;
+import corp.finance.FinancialServices.users.service.UserFeignClient;
 import corp.finance.FinancialServices.users.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +28,10 @@ public class CustomerServiceImpl implements CustomerService {
     private final UserService userService;
     private final ProductService productService;
     private final CollateralService collateralService;
+
+    private final UserFeignClient userFeignClient;
+    private final ProductFeignClient productFeignClient;
+    private final CollateralFeignClient collateralFeignClient;
 
 
     @Override
@@ -68,6 +75,30 @@ public class CustomerServiceImpl implements CustomerService {
                 .products(products)
                 .collaterals(collaterals)
                 .build();
+    }
+
+    @Override
+    public List<Customer> getAllCustomersV2() {
+        List<User> allUsers = userFeignClient.getAllUsers();
+        List<Product> allProducts = productFeignClient.getAllProducts();
+        List<Collateral> allCollaterals = collateralFeignClient.getAllCollaterals();
+        return buildCustomers(allUsers, allProducts, allCollaterals);
+    }
+
+    @Override
+    public List<Customer> getCustomersV2(List<String> userIds) {
+        List<String> productIds = new ArrayList<>();
+        List<String> collateralIds = new ArrayList<>();
+        List<User> users = userFeignClient.getUsers(userIds);
+        users.forEach(
+                user -> {
+                    productIds.addAll(user.getProductIds());
+                    collateralIds.addAll(user.getCollateralIds());
+                }
+        );
+        List<Product> products = productFeignClient.getProducts(productIds);
+        List<Collateral> collaterals = collateralFeignClient.getCollaterals(collateralIds);
+        return buildCustomers(users, products, collaterals);
     }
 
     private List<Customer> buildCustomers(List<User> allUsers, List<Product> allProducts, List<Collateral> allCollaterals) {

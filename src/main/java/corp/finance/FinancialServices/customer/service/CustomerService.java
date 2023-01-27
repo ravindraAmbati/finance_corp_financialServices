@@ -11,4 +11,8 @@ public interface CustomerService {
     List<Customer> getCustomers(List<String> userIds);
 
     Customer getCustomer(String userId);
+
+    List<Customer> getAllCustomersV2();
+
+    List<Customer> getCustomersV2(List<String> userIds);
 }
