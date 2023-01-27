@@ -1,6 +1,6 @@
 spring:
   application:
-    name: FinancialServices
+    name: financialServices
   config:
     import: optional:configserver:http://localhost:9050
   profiles:
